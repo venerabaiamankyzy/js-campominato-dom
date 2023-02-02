@@ -1,0 +1,52 @@
+header {
+  background-color: #febc3f;
+}
+main {
+  /* height: 100vh; */
+  background-color: #1b1b32;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+#grid {
+  width: 800px;
+  height: 800px;
+  margin: auto;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#grid,
+.square {
+  border: 2px solid white;
+  color: white;
+}
+
+.square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: crosshair;
+}
+.square.easy {
+  width: calc(100% / 10);
+  height: calc(100% / 10);
+}
+.square.medium {
+  width: calc(100% / 9);
+  height: calc(100% / 9);
+}
+.square.hard {
+  width: calc(100% / 7);
+  height: calc(100% / 7);
+}
+
+.square.active {
+  background-color: rgb(91, 178, 229);
+  color: white;
+}
