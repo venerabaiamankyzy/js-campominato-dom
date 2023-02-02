@@ -33,12 +33,15 @@ const selectEl = document.getElementById("difficulty");
 gridButtonEl.addEventListener("click", function () {
   const selectEl = document.getElementById("difficulty").value;
   let selectValue = 0;
+  let bombRange = 100;
   if (selectEl == "easy") {
     selectValue = 1;
   } else if (selectEl == "medium") {
     selectValue = 2;
+    bombRange = 81;
   } else if (selectEl == "hard") {
     selectValue = 3;
+    bombRange = 49;
   }
   generatedGrid(gridEl, selectValue);
 });
@@ -59,7 +62,7 @@ for (let b = 0; b < 16; b++) {
   }
   bombArray.push(bomb);
 }
-console.log("BombArray", bombArray);
+console.log(bombArray);
 /**********************************
  *                                *
  *              FUNCTIONS         *
@@ -72,6 +75,7 @@ function generatedGrid(grid, difficulty) {
   // i livelli di difficoltà
   let selectClasses;
   let dimension;
+  let count = 0;
   if (difficulty == 1) {
     dimension = 100;
     selectClasses = "easy";
@@ -95,13 +99,36 @@ function generatedGrid(grid, difficulty) {
     //gli aggiungo i numeri
     squareEl.innerHTML = numberOfSquare;
 
-    // aggiungo un addeventlistener sul click che faccia il "toggle" della classe .active
-    squareEl.addEventListener("click", function () {
-      this.classList.toggle("active");
-      console.log(this.innerHTML);
-    });
-
     //lo aggiungo alla griglia
     grid.append(squareEl);
+
+    // aggiungo un addeventlistener sul click che faccia il "toggle" della classe .active
+    squareEl.addEventListener("click", function wayOfPalyer() {
+      // aggiungo la classe .active
+      this.classList.toggle("active");
+
+      // incrento il punteggio
+      count++;
+
+      if (bombArray.includes(numberOfSquare)) {
+        this.classList.toggle("active");
+        this.classList.add("bomb");
+        this.innerHTML = '<i class="fa-solid fa-bomb"></i>';
+        alert("Game over. You got" + " " + (count - 1) + " " + "points");
+
+        // altre bombe nascoste
+        let allSquares = document.getElementsByClassName("square");
+        for (let i = 0; i < allSquares.length; i++) {
+          let currentSquare = allSquares[i];
+          let currentSquareNumber = parseInt(currentSquare.innerHTML);
+          if (bombArray.includes(currentSquareNumber)) {
+            currentSquare.classList.add("bomb");
+            currentSquare.innerHTML = '<i class="fa-solid fa-bomb"></i>';
+          }
+          // remove eventListener
+          currentSquare.removeEventListener("click", wayOfPalyer);
+        }
+      }
+    });
   }
 }
